@@ -53,6 +53,15 @@ void HUB08::drawPixel(int16_t x, int16_t y, uint16_t color) {
   if ((x < 0) || (x >= width()) || (y < 0) || (y >= height()))
     return;
 
+  uint8_t *byte = buffer + x / 8 + y * width() / 8;
+  uint8_t  bit = x % 8;
+
+  if (color) {
+    *byte |= 0x80 >> bit;
+  } else {
+    *byte &= ~(0x80 >> bit);
+  }
+  /*
   // x is which column
   switch (color)
   {
@@ -60,7 +69,7 @@ void HUB08::drawPixel(int16_t x, int16_t y, uint16_t color) {
     case BLACK:   buffer[x+ (y/8)*HUB08_LCDWIDTH] &= ~(1 << (y&7)); break;
     case INVERSE: buffer[x+ (y/8)*HUB08_LCDWIDTH] ^=  (1 << (y&7)); break;
   }
-
+  */
 }
 
 HUB08::HUB08(uint8_t a, uint8_t b, uint8_t c, uint8_t d, uint8_t oe, uint8_t r1, uint8_t stb, uint8_t clk) :
